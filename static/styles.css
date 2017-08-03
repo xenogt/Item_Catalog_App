@@ -74,15 +74,15 @@ h3 {
 .glyphicon {
 	margin-right: 10px;
 }
-.top-item {
+.top-menu {
 	padding-top: 30px;
 	padding-bottom: 30px;
 }
-.top-item p {
+.top-menu p {
 	margin-bottom: 0;
 	line-height: 16px;
 }
-.top-item a {
+.top-menu a {
 	margin-bottom: 0;
 	line-height: 16px;
 	font-size: 16px;
@@ -105,7 +105,7 @@ h3 {
 	background-repeat: no-repeat;
 	background-size: cover;
 }
-.banner.item {
+.banner.menu {
 	height: 150px;
 	background-color: #E1E17F;
 }
@@ -116,21 +116,21 @@ h3 {
 .banner h1 {
 	margin: 45px 0;
 }
- .catagory-list {
+ .restaurant-list {
  	background-color: #F0F0F0;
  	padding: 20px;
- }
- .catagory-list:hover {
+u }
+ .restaurant-list:hover {
  	background-color: #e1e17f;
  	padding: 20px;
 }
-.item {
+.menu-item {
 	background: #F0F0F0;
 	padding: 20px;
 	margin: 20px;
 	margin-left: -20px;
 }
-.item-price {
+.menu-price {
 	font-weight: 700;
 }
 .creator {
