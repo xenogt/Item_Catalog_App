@@ -15,8 +15,8 @@ class User(Base):
     picture = Column(String(250))
 
 
-class Restaurant(Base):
-    __tablename__ = 'restaurant'
+class Genre(Base):
+    __tablename__ = 'genre'
 
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
@@ -32,16 +32,16 @@ class Restaurant(Base):
         }
 
 
-class MenuItem(Base):
-    __tablename__ = 'menu_item'
+class GameItem(Base):
+    __tablename__ = 'game_item'
 
     name = Column(String(80), nullable=False)
     id = Column(Integer, primary_key=True)
     description = Column(String(250))
     price = Column(String(8))
-    course = Column(String(250))
-    restaurant_id = Column(Integer, ForeignKey('restaurant.id'))
-    restaurant = relationship(Restaurant)
+    platform = Column(String(50))
+    genre_id = Column(Integer, ForeignKey('genre.id'))
+    genre = relationship(Genre)
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
 
@@ -53,11 +53,11 @@ class MenuItem(Base):
             'description': self.description,
             'id': self.id,
             'price': self.price,
-            'course': self.course,
+            'platform': self.platform,
         }
 
 
-engine = create_engine('sqlite:///restaurantmenuwithusers.db')
+engine = create_engine('sqlite:///gamecatalog.db')
 
 
 Base.metadata.create_all(engine)
