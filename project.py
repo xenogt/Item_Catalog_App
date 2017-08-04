@@ -20,7 +20,7 @@ APPLICATION_NAME = "Genre Game Application"
 
 
 # Connect to Database and create database session
-engine = create_engine('sqlite:///genregamewithusers.db')
+engine = create_engine('sqlite:///gamecatalog.db')
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
