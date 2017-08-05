@@ -16,19 +16,19 @@
 		</div>
 	</div>
 
-<div class = 'flash'>
-		      {% with messages = get_flashed_messages() %}
+<!--<div class = 'flash'>-->
+		      {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
           
-        <ul>
-        {% for message in messages %}
-            <li> <strong> {{ message }} </strong> </li>
+        <!--<ul>-->
+        {% for catagory, message in messages %}
+            <div class="{{catagory}}"> {{ message }}  </div>
         {% endfor %}
-        </ul>
+        <!--</ul>-->
         {% endif %}
     {% endwith %}
 
-</div>
+<!--</div>-->
 	<div class="row padding-top padding-bottom">
 		<div class="col-md-1"></div>
 		<div class="col-md-11 padding-none">
@@ -55,13 +55,13 @@
 		<div class="row">
 			<div class="col-md-1"></div>
 			<div class="col-md-3">
-				<h2>Appetizers</h2>
+				<h2>PC</h2>
 					{% for i in items %}
-						{% if i.platform == 'Appetizer' %}
+						{% if i.platform == 'PC' %}
 							<div class="game-item">
-								<h3>{{i.name}}</h3>
+								<h3>{{i.name}} ({{i.user.name}})</h3>
 								<p>{{i.description}}</p>
-								<p class="game-price">{{i.price}}</p>
+								<p class="game-release_year">{{i.release_year}}</p>
 								<a href='{{url_for('editGameItem', genre_id = genre.id, game_id=i.id ) }}'>Edit</a> | 
 								<a href='{{url_for('deleteGameItem', genre_id = genre.id, game_id=i.id ) }}'>Delete</a>
 							</div>
@@ -69,13 +69,13 @@
 					{% endfor %}
 			</div>
 			<div class="col-md-4">			
-				<h2>Entrees</h2>
+				<h2>Game Console</h2>
 					{% for i in items %}
-						{% if i.platform == 'Entree' %}
+						{% if i.platform == 'Game Console' %}
 						<div class="game-item">
-							<h3>{{i.name}}</h3>
+							<h3>{{i.name}} ({{i.user.name}})</h3>
 							<p>{{i.description}}</p>
-							<p class="game-price">{{i.price}}</p>
+							<p class="game-release_year">{{i.release_year}}</p>
 							<a href='{{url_for('editGameItem', genre_id = genre.id, game_id=i.id ) }}'>Edit</a> | 
 							<a href='{{url_for('deleteGameItem', genre_id = genre.id, game_id=i.id ) }}'>Delete</a>
 						</div>
@@ -83,25 +83,13 @@
 					{% endfor %}
 			</div>
 			<div class="col-md-3">
-				<h2>Desserts</h2>
+				<h2>Mobile</h2>
 					{% for i in items %}
-						{% if i.platform == 'Dessert' %}
+						{% if i.platform == 'Mobile' %}
 						<div class="game-item">
-							<h3>{{i.name}}</h3>
+							<h3>{{i.name}} ({{i.user.name}})</h3>
 							<p>{{i.description}}</p>
-							<p class="game-price">{{i.price}}</p>
-							<a href='{{url_for('editGameItem', genre_id = genre.id, game_id=i.id ) }}'>Edit</a> | 
-							<a href='{{url_for('deleteGameItem', genre_id = genre.id, game_id=i.id ) }}'>Delete</a>
-						</div>
-						{% endif %}
-					{% endfor %}
-				<h2>Beverages</h2>
-					{% for i in items %}
-						{% if i.platform == 'Beverage' %}
-						<div class="game-item">
-							<h3>{{i.name}}</h3>
-							<p>{{i.description}}</p>
-							<p class="game-price">{{i.price}}</p>
+							<p class="game-release_year">{{i.release_year}}</p>
 							<a href='{{url_for('editGameItem', genre_id = genre.id, game_id=i.id ) }}'>Edit</a> | 
 							<a href='{{url_for('deleteGameItem', genre_id = genre.id, game_id=i.id ) }}'>Delete</a>
 						</div>

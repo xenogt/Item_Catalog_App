@@ -38,7 +38,7 @@ class GameItem(Base):
     name = Column(String(80), nullable=False)
     id = Column(Integer, primary_key=True)
     description = Column(String(250))
-    price = Column(String(8))
+    release_year = Column(String(4))
     platform = Column(String(50))
     genre_id = Column(Integer, ForeignKey('genre.id'))
     genre = relationship(Genre)
@@ -52,7 +52,7 @@ class GameItem(Base):
             'name': self.name,
             'description': self.description,
             'id': self.id,
-            'price': self.price,
+            'release_year': self.release_year,
             'platform': self.platform,
         }
 

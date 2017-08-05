@@ -294,9 +294,7 @@ def showGenres():
     else:
         return render_template('genres.html', genres=genres)
 
-# Create a new genre
-
-
+# Create a new genr
 @app.route('/genre/new/', methods=['GET', 'POST'])
 def newGenre():
     if 'username' not in login_session:
@@ -311,9 +309,8 @@ def newGenre():
     else:
         return render_template('newGenre.html')
 
+
 # Edit a genre
-
-
 @app.route('/genre/<int:genre_id>/edit/', methods=['GET', 'POST'])
 def editGenre(genre_id):
     editedGenre = session.query(
@@ -321,11 +318,12 @@ def editGenre(genre_id):
     if 'username' not in login_session:
         return redirect('/login')
     if editedGenre.user_id != login_session['user_id']:
-        return "<script>function myFunction() {alert('You are not authorized to edit this genre. Please create your own genre in order to edit.');}</script><body onload='myFunction()''>"
+        flash('You are not authorized to edit this genre. Please create your own genre in order to edit.', 'error')
+        return redirect(url_for('showGenres'))
     if request.method == 'POST':
         if request.form['name']:
             editedGenre.name = request.form['name']
-            flash('Genre Successfully Edited %s' % editedGenre.name)
+            flash('Genre Successfully Edited %s' % editedGenre.name, 'success')
             return redirect(url_for('showGenres'))
     else:
         return render_template('editGenre.html', genre=editedGenre)
@@ -339,18 +337,18 @@ def deleteGenre(genre_id):
     if 'username' not in login_session:
         return redirect('/login')
     if genreToDelete.user_id != login_session['user_id']:
-        return "<script>function myFunction() {alert('You are not authorized to delete this genre. Please create your own genre in order to delete.');}</script><body onload='myFunction()''>"
+        flash('You are not authorized to delete this genre', 'error')
+        return redirect(url_for('showGenres', genre_id=genre_id))
     if request.method == 'POST':
         session.delete(genreToDelete)
-        flash('%s Successfully Deleted' % genreToDelete.name)
+        flash('%s Successfully Deleted' % genreToDelete.name, 'success')
         session.commit()
         return redirect(url_for('showGenres', genre_id=genre_id))
     else:
         return render_template('deleteGenre.html', genre=genreToDelete)
 
+
 # Show a genre game
-
-
 @app.route('/genre/<int:genre_id>/')
 @app.route('/genre/<int:genre_id>/game/')
 def showGame(genre_id):
@@ -358,7 +356,9 @@ def showGame(genre_id):
     creator = getUserInfo(genre.user_id)
     items = session.query(GameItem).filter_by(
         genre_id=genre_id).all()
-    if 'username' not in login_session or creator.id != login_session['user_id']:
+    # if 'username' not in login_session or creator.id != login_session['user_id']:
+    #     return render_template('publicgame.html', items=items, genre=genre, creator=creator)
+    if 'username' not in login_session:
         return render_template('publicgame.html', items=items, genre=genre, creator=creator)
     else:
         return render_template('game.html', items=items, genre=genre, creator=creator)
@@ -370,41 +370,38 @@ def newGameItem(genre_id):
     if 'username' not in login_session:
         return redirect('/login')
     genre = session.query(Genre).filter_by(id=genre_id).one()
-    if login_session['user_id'] != genre.user_id:
-        return "<script>function myFunction() {alert('You are not authorized to add game items to this genre. Please create your own genre in order to add items.');}</script><body onload='myFunction()''>"
-        if request.method == 'POST':
-            newItem = GameItem(name=request.form['name'], description=request.form['description'], price=request.form[
-                               'price'], platform=request.form['platform'], genre_id=genre_id, user_id=genre.user_id)
-            session.add(newItem)
-            session.commit()
-            flash('New Game %s Item Successfully Created' % (newItem.name))
-            return redirect(url_for('showGame', genre_id=genre_id))
+    if request.method == 'POST':
+        newItem = GameItem(name=request.form['name'], description=request.form['description'], release_year=request.form[
+                               'release_year'], platform=request.form['platform'], genre_id=genre_id, user_id=login_session['user_id'])
+        session.add(newItem)
+        session.commit()
+        flash('New Game %s Item Successfully Created' % (newItem.name), 'success')
+        return redirect(url_for('showGame', genre_id=genre_id))
     else:
         return render_template('newgameitem.html', genre_id=genre_id)
 
 # Edit a game item
-
-
 @app.route('/genre/<int:genre_id>/game/<int:game_id>/edit', methods=['GET', 'POST'])
 def editGameItem(genre_id, game_id):
     if 'username' not in login_session:
         return redirect('/login')
     editedItem = session.query(GameItem).filter_by(id=game_id).one()
     genre = session.query(Genre).filter_by(id=genre_id).one()
-    if login_session['user_id'] != genre.user_id:
-        return "<script>function myFunction() {alert('You are not authorized to edit game items to this genre. Please create your own genre in order to edit items.');}</script><body onload='myFunction()''>"
+    if login_session['user_id'] != editedItem.user_id:
+        flash('You are not authorized to edit this game item', 'error')
+        return redirect(url_for('showGame', genre_id=genre_id))
     if request.method == 'POST':
         if request.form['name']:
             editedItem.name = request.form['name']
         if request.form['description']:
             editedItem.description = request.form['description']
-        if request.form['price']:
-            editedItem.price = request.form['price']
+        if request.form['release_year']:
+            editedItem.release_year = request.form['release_year']
         if request.form['platform']:
             editedItem.platform = request.form['platform']
         session.add(editedItem)
         session.commit()
-        flash('Game Item Successfully Edited')
+        flash('Game Item Successfully Edited', 'success')
         return redirect(url_for('showGame', genre_id=genre_id))
     else:
         return render_template('editgameitem.html', genre_id=genre_id, game_id=game_id, item=editedItem)
@@ -417,12 +414,13 @@ def deleteGameItem(genre_id, game_id):
         return redirect('/login')
     genre = session.query(Genre).filter_by(id=genre_id).one()
     itemToDelete = session.query(GameItem).filter_by(id=game_id).one()
-    if login_session['user_id'] != genre.user_id:
-        return "<script>function myFunction() {alert('You are not authorized to delete game items to this genre. Please create your own genre in order to delete items.');}</script><body onload='myFunction()''>"
+    if login_session['user_id'] != itemToDelete.user_id:
+        flash('You are not authorized to delete this game item.', 'error')
+        return redirect(url_for('showGame', genre_id=genre_id))
     if request.method == 'POST':
         session.delete(itemToDelete)
         session.commit()
-        flash('Game Item Successfully Deleted')
+        flash('Game Item Successfully Deleted', 'success')
         return redirect(url_for('showGame', genre_id=genre_id))
     else:
         return render_template('deleteGameItem.html', item=itemToDelete)
