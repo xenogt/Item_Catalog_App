@@ -319,7 +319,7 @@ def editGenre(genre_id):
         return redirect('/login')
     if editedGenre.user_id != login_session['user_id']:
         flash('You are not authorized to edit this genre. Please create your own genre in order to edit.', 'error')
-        return redirect(url_for('showGenres'))
+        return redirect(url_for('showGame', genre_id = genre_id))
     if request.method == 'POST':
         if request.form['name']:
             editedGenre.name = request.form['name']
@@ -338,7 +338,7 @@ def deleteGenre(genre_id):
         return redirect('/login')
     if genreToDelete.user_id != login_session['user_id']:
         flash('You are not authorized to delete this genre', 'error')
-        return redirect(url_for('showGenres', genre_id=genre_id))
+        return redirect(url_for('showGame', genre_id=genre_id))
     if request.method == 'POST':
         session.delete(genreToDelete)
         flash('%s Successfully Deleted' % genreToDelete.name, 'success')

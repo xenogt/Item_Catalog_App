@@ -4,35 +4,20 @@
 	<div class="row divider green">
 		<div class="col-md-12"></div>
 	</div>
-	<div class="row banner game">
+	<div class="row banner game {{genre.name}}">
 		<div class="col-md-11 col-md-offset-1 padding-none">
-			<h1>{{ genre.name }}
-			<!--<figure class="creator">
-				<img src="{{ url_for('static', filename='blank_user.gif') }}">
-				<figcaption>Game creator's name goes here</figcaption>
-			</figure>-->
-			<!--<figure class="creator">
-				<img src="{{ creator.picture}}">
-				<figcaption>added by: {{ creator.name }}</figcaption>
-			</figure>-->
-			</h1>
-
+			<h1>{{ genre.name }}  <span style="font-weight:100; font-size: 18px;">({{items|length}} games)</span></h1>
 		</div>
 	</div>
 
-<!--<div class = 'flash'>-->
-		      {% with messages = get_flashed_messages(with_categories=true) %}
+	{% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
-          
-        <!--<ul>-->
         {% for catagory, message in messages %}
             <div class="{{catagory}}"> {{ message }}  </div>
         {% endfor %}
-        <!--</ul>-->
-        {% endif %}
+      {% endif %}
     {% endwith %}
 
-<!--</div>-->
 	<div class="row padding-top padding-bottom">
 		<div class="col-md-1"></div>
 		<div class="col-md-11 padding-none">
@@ -57,17 +42,12 @@
 	
 	{% if items !=[] %}	
 		<div class="row">
-			<!--<div class="col-md-1"></div>-->
 			<div class="col-md-4">
 				<h2>PC</h2>
 					{% for i in items %}
 						{% if i.platform == 'PC' %}
 							<div class="game-item">
 								<h3>{{i.name}} ({{i.user.name}})</h3>
-								<!--<figure class="creator">
-				<img src="{{i.user.picture}}">
-				<figcaption>{{ i.user.name }}</figcaption>
-			</figure>-->
 								<p>{{i.description}}</p>
 								<p class="game-release_year">{{i.release_year}}</p>
 								<a href='{{url_for('editGameItem', genre_id = genre.id, game_id=i.id ) }}'>Edit</a> | 
@@ -104,7 +84,6 @@
 						{% endif %}
 					{% endfor %}
 			</div>
-			<!--<div class="col-md-1"></div>-->
 		</div>
 	{% endif %}
 {% endblock %}
