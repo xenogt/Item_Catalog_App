@@ -7,10 +7,14 @@
 	<div class="row banner game">
 		<div class="col-md-11 col-md-offset-1 padding-none">
 			<h1>{{ genre.name }}
-			<figure class="creator">
+			<!--<figure class="creator">
 				<img src="{{ url_for('static', filename='blank_user.gif') }}">
 				<figcaption>Game creator's name goes here</figcaption>
-			</figure>
+			</figure>-->
+			<!--<figure class="creator">
+				<img src="{{ creator.picture}}">
+				<figcaption>added by: {{ creator.name }}</figcaption>
+			</figure>-->
 			</h1>
 
 		</div>
@@ -39,7 +43,7 @@
 			</a>
 			<a href="{{url_for('newGameItem', genre_id = genre.id )}}">
 				<button class="btn btn-default" id="new-game-item">
-					<span class="glyphicon glyphicon-glass" aria-hidden="true"></span>Add Game Item
+					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Add Game Item
 				</button>
 			</a>
 						<a href="{{url_for('deleteGenre', genre_id = genre.id )}}">
@@ -53,13 +57,17 @@
 	
 	{% if items !=[] %}	
 		<div class="row">
-			<div class="col-md-1"></div>
-			<div class="col-md-3">
+			<!--<div class="col-md-1"></div>-->
+			<div class="col-md-4">
 				<h2>PC</h2>
 					{% for i in items %}
 						{% if i.platform == 'PC' %}
 							<div class="game-item">
 								<h3>{{i.name}} ({{i.user.name}})</h3>
+								<!--<figure class="creator">
+				<img src="{{i.user.picture}}">
+				<figcaption>{{ i.user.name }}</figcaption>
+			</figure>-->
 								<p>{{i.description}}</p>
 								<p class="game-release_year">{{i.release_year}}</p>
 								<a href='{{url_for('editGameItem', genre_id = genre.id, game_id=i.id ) }}'>Edit</a> | 
@@ -82,7 +90,7 @@
 						{% endif %}
 					{% endfor %}
 			</div>
-			<div class="col-md-3">
+			<div class="col-md-4">
 				<h2>Mobile</h2>
 					{% for i in items %}
 						{% if i.platform == 'Mobile' %}
@@ -96,7 +104,7 @@
 						{% endif %}
 					{% endfor %}
 			</div>
-			<div class="col-md-1"></div>
+			<!--<div class="col-md-1"></div>-->
 		</div>
 	{% endif %}
 {% endblock %}

@@ -19,7 +19,7 @@ h2 {
 
 h3 {
 	font-size: 18px;
-	color: #4A4A4A;
+	/*color: #4A4A4A;*/
 	line-height: 23px;
 }
  p {
@@ -108,22 +108,84 @@ h3 {
 .banner.game {
 	height: 150px;
 	background-color: #E1E17F;
+	background: url("/static/top-banner.jpg");
+	background-position: right;
+	background-repeat: no-repeat;
+	background-size: cover;
 }
+
+.banner.game.Role-playing {
+	height: 150px;
+	background: url("/static/Role-playing.jpg");
+	background-position: right;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.banner.game.Strategy {
+	height: 150px;
+	background: url("/static/Strategy.jpg");
+	background-position: right;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.banner.game.Action {
+	height: 150px;
+	background: url("/static/Action.jpg");
+}
+
+.banner.game.Adventure {
+	height: 150px;
+	background: url("/static/Adventure.jpg");
+}
+
+.banner.game.Action.Adventure {
+	height: 150px;
+	background: url("/static/Action-Adventure.jpg");
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.banner.game.Simulation {
+	height: 150px;
+	background: url("/static/Simulation.jpg");
+	background-position: right;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.banner.game.Sports {
+	height: 150px;
+	background: url("/static/Sports.jpg");
+	background-position: right;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
 .banner.profile {
 	height: 150px;
 	background-color: #A6E8EB;
 }
 .banner h1 {
 	margin: 45px 0;
+	color: white;
+	font-weight: 700;
 }
  .genre-list {
  	background-color: #F0F0F0;
  	padding: 20px;
-u }
+ }
  .genre-list:hover {
- 	background-color: #e1e17f;
+ 	background-color: #798393;
  	padding: 20px;
+	color: white;
 }
+
+form {
+	display: inline-flex;
+}
+
 .game-item {
 	background: #F0F0F0;
 	padding: 20px;

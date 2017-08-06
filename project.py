@@ -209,7 +209,7 @@ def gconnect():
     output += '<img src="'
     output += login_session['picture']
     output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
-    flash("you are now logged in as %s" % login_session['username'])
+    flash("you are now logged in as %s" % login_session['username'], 'success')
     print "done!"
     return output
 
@@ -354,6 +354,7 @@ def deleteGenre(genre_id):
 def showGame(genre_id):
     genre = session.query(Genre).filter_by(id=genre_id).one()
     creator = getUserInfo(genre.user_id)
+
     items = session.query(GameItem).filter_by(
         genre_id=genre_id).all()
     # if 'username' not in login_session or creator.id != login_session['user_id']:
