@@ -289,7 +289,7 @@ def genresJSON():
 @app.route('/genre/')
 def showGenres():
     genres = session.query(Genre).order_by(asc(Genre.name))
-    latest = session.query(GameItem).order_by(GameItem.id.desc()).limit(5)
+    latest = session.query(GameItem).order_by(GameItem.id.desc()).limit(genres.count())
     if 'username' not in login_session:
         return render_template('publicgenres.html', genres=genres, latest=latest)
     else:
