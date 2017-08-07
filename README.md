@@ -27,5 +27,4 @@ go to `localhost:8000/genre/<genre_id>/game/<game_id>/JSON`
 - without log into the application, user can only view the content
 - home page has a split view, a list of pre-populated game genres on the left, and a list of latest added game items on the right.
 - click on a genre or clicking on an game item will take the user to the corresponding genre view that list out all the games of the given genre.
-
 - log into the application allows user to add new genre or game items.  user will only be able to edit/delete items that he/she created.  appropriate flash message will shown accordingly.
