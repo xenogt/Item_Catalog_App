@@ -1,16 +1,17 @@
-from flask import Flask, render_template, request, redirect, jsonify, url_for, flash
-from sqlalchemy import create_engine, asc
-from sqlalchemy.orm import sessionmaker
-from database_setup import Base, Genre, GameItem, User
-from flask import session as login_session
 import random
 import string
-from oauth2client.client import flow_from_clientsecrets
-from oauth2client.client import FlowExchangeError
 import httplib2
 import json
-from flask import make_response
 import requests
+from sqlalchemy import create_engine, asc
+from sqlalchemy.orm import sessionmaker
+from flask import session as login_session
+from database_setup import Base, Genre, GameItem, User
+from oauth2client.client import flow_from_clientsecrets
+from oauth2client.client import FlowExchangeError
+from flask import make_response
+from flask import Flask, render_template, request, redirect, jsonify,
+url_for, flash
 
 app = Flask(__name__)
 
@@ -45,34 +46,22 @@ def fbconnect():
         return response
     access_token = request.data
     print "access token received %s " % access_token
-
-
     app_id = json.loads(open('fb_client_secrets.json', 'r').read())[
         'web']['app_id']
     app_secret = json.loads(
         open('fb_client_secrets.json', 'r').read())['web']['app_secret']
-    url = 'https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=%s' % (
-        app_id, app_secret, access_token)
+    url = 'https://graph.facebook.com/oauth/access_token?grant_type=fb_' \
+        'exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=%s' \
+        % (app_id, app_secret, access_token)
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
-
-
     # Use token to get user info from API
     userinfo_url = "https://graph.facebook.com/v2.8/me"
-    '''
-        Due to the formatting for the result from the server token exchange we have to
-        split the token first on commas and select the first index which gives us the key : value
-        for the server access token then we split it on colons to pull out the actual token value
-        and replace the remaining quotes with nothing so that it can be used directly in the graph
-        api calls
-    '''
     token = result.split(',')[0].split(':')[1].replace('"', '')
-
-    url = 'https://graph.facebook.com/v2.8/me?access_token=%s&fields=name,id,email' % token
+    url = 'https://graph.facebook.com/v2.8/me?access_token=%s&fields=name,' \
+        'id,email' % token
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
-    # print "url sent for API access:%s"% url
-    # print "API JSON result: %s" % result
     data = json.loads(result)
     login_session['provider'] = 'facebook'
     login_session['username'] = data["name"]
@@ -83,7 +72,8 @@ def fbconnect():
     login_session['access_token'] = token
 
     # Get user picture
-    url = 'https://graph.facebook.com/v2.8/me/picture?access_token=%s&redirect=0&height=200&width=200' % token
+    url = 'https://graph.facebook.com/v2.8/me/picture?access_token=%s&' \
+        'redirect=0&height=200&width=200' % token
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
     data = json.loads(result)
@@ -103,7 +93,8 @@ def fbconnect():
     output += '!</h1>'
     output += '<img src="'
     output += login_session['picture']
-    output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
+    output += ' " style = "width: 300px; height: 300px;border-radius: 150px;' \
+        '-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
 
     flash("Now logged in as %s" % login_session['username'])
     return output
@@ -114,7 +105,8 @@ def fbdisconnect():
     facebook_id = login_session['facebook_id']
     # The access token must me included to successfully logout
     access_token = login_session['access_token']
-    url = 'https://graph.facebook.com/%s/permissions?access_token=%s' % (facebook_id,access_token)
+    url = 'https://graph.facebook.com/%s/permissions?access_token=%s' % \
+        (facebook_id, access_token)
     h = httplib2.Http()
     result = h.request(url, 'DELETE')[1]
     if result == '{"success":true}':
@@ -174,8 +166,8 @@ def gconnect():
     stored_access_token = login_session.get('access_token')
     stored_gplus_id = login_session.get('gplus_id')
     if stored_access_token is not None and gplus_id == stored_gplus_id:
-        response = make_response(json.dumps('Current user is already connected.'),
-                                 200)
+        response = make_response(json.dumps(
+                'Current user is already connected.'), 200)
         response.headers['Content-Type'] = 'application/json'
         return response
 
@@ -208,14 +200,14 @@ def gconnect():
     output += '!</h1>'
     output += '<img src="'
     output += login_session['picture']
-    output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
+    output += ' " style = "width: 300px; height: 300px;border-radius: ' \
+        '150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
     flash("you are now logged in as %s" % login_session['username'], 'success')
     print "done!"
     return output
 
+
 # User Helper Functions
-
-
 def createUser(login_session):
     newUser = User(name=login_session['username'], email=login_session[
                    'email'], picture=login_session['picture'])
@@ -237,9 +229,8 @@ def getUserID(email):
     except:
         return None
 
+
 # DISCONNECT - Revoke a current user's token and reset their login_session
-
-
 @app.route('/gdisconnect')
 def gdisconnect():
     # Only disconnect a connected user.
@@ -258,7 +249,8 @@ def gdisconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
     else:
-        response = make_response(json.dumps('Failed to revoke token for given user.', 400))
+        response = make_response(json.dumps(
+            'Failed to revoke token for given user.', 400))
         response.headers['Content-Type'] = 'application/json'
         return response
 
@@ -289,11 +281,14 @@ def genresJSON():
 @app.route('/genre/')
 def showGenres():
     genres = session.query(Genre).order_by(asc(Genre.name))
-    latest = session.query(GameItem).order_by(GameItem.id.desc()).limit(genres.count())
+    latest = session.query(GameItem).order_by(GameItem.id.desc()) \
+        .limit(genres.count())
     if 'username' not in login_session:
-        return render_template('publicgenres.html', genres=genres, latest=latest)
+        return render_template(
+            'publicgenres.html', genres=genres, latest=latest)
     else:
         return render_template('genres.html', genres=genres, latest=latest)
+
 
 # Create a new genr
 @app.route('/genre/new/', methods=['GET', 'POST'])
@@ -319,8 +314,10 @@ def editGenre(genre_id):
     if 'username' not in login_session:
         return redirect('/login')
     if editedGenre.user_id != login_session['user_id']:
-        flash('You are not authorized to edit this genre. Please create your own genre in order to edit.', 'error')
-        return redirect(url_for('showGame', genre_id = genre_id))
+        flash(
+            'You are not authorized to edit this genre. Please create your own'
+            'genre in order to edit.', 'error')
+        return redirect(url_for('showGame', genre_id=genre_id))
     if request.method == 'POST':
         if request.form['name']:
             editedGenre.name = request.form['name']
@@ -360,9 +357,11 @@ def showGame(genre_id):
         genre_id=genre_id).all()
 
     if 'username' not in login_session:
-        return render_template('publicgame.html', items=items, genre=genre, creator=creator)
+        return render_template(
+            'publicgame.html', items=items, genre=genre, creator=creator)
     else:
-        return render_template('game.html', items=items, genre=genre, creator=creator)
+        return render_template(
+            'game.html', items=items, genre=genre, creator=creator)
 
 
 # Create a new game item
@@ -372,31 +371,44 @@ def newGameItem(genre_id):
         return redirect('/login')
     genre = session.query(Genre).filter_by(id=genre_id).one()
     if request.method == 'POST':
-        newItem = GameItem(name=request.form['name'], description=request.form['description'], release_year=request.form[
-                               'release_year'], platform=request.form['platform'], genre_id=genre_id, user_id=login_session['user_id'])
+        newItem = GameItem(
+            name=request.form['name'],
+            description=request.form['description'],
+            release_year=request.form['release_year'],
+            platform=request.form['platform'],
+            genre_id=genre_id,
+            user_id=login_session['user_id'])
         session.add(newItem)
         session.commit()
-        flash('New Game %s Item Successfully Created' % (newItem.name), 'success')
+        flash(
+            'New Game %s Item Successfully Created' % (newItem.name),
+            'success')
         return redirect(url_for('showGame', genre_id=genre_id))
     else:
         return render_template('newgameitem.html', genre_id=genre_id)
 
 
 # show a game item
-@app.route('/genre/<int:genre_id>/game/<int:game_id>/view', methods=['GET', 'POST'])
+@app.route(
+    '/genre/<int:genre_id>/game/<int:game_id>/view', methods=['GET', 'POST'])
 def showSingleGame(genre_id, game_id):
     toViewItem = session.query(GameItem).filter_by(id=game_id).one()
     creator = getUserInfo(toViewItem.user.id)
     genre = session.query(Genre).filter_by(id=genre_id).one()
 
-    if 'username' not in login_session or toViewItem.user.id != login_session['user_id']:
-        return render_template('publicsinglegame.html', item=toViewItem, genre=genre, creator=creator)
+    if 'username' not in login_session
+    or toViewItem.user.id != login_session['user_id']:
+        return render_template(
+            'publicsinglegame.html',
+            item=toViewItem, genre=genre, creator=creator)
     else:
-        return render_template('singlegame.html', item=toViewItem, genre=genre, creator=creator)
+        return render_template(
+            'singlegame.html', item=toViewItem, genre=genre, creator=creator)
 
 
 # Edit a game item
-@app.route('/genre/<int:genre_id>/game/<int:game_id>/edit', methods=['GET', 'POST'])
+@app.route(
+    '/genre/<int:genre_id>/game/<int:game_id>/edit', methods=['GET', 'POST'])
 def editGameItem(genre_id, game_id):
     if 'username' not in login_session:
         return redirect('/login')
@@ -419,11 +431,14 @@ def editGameItem(genre_id, game_id):
         flash('Game Item Successfully Edited', 'success')
         return redirect(url_for('showGame', genre_id=genre_id))
     else:
-        return render_template('editgameitem.html', genre_id=genre_id, game_id=game_id, item=editedItem)
+        return render_template(
+            'editgameitem.html',
+            genre_id=genre_id, game_id=game_id, item=editedItem)
 
 
 # Delete a game item
-@app.route('/genre/<int:genre_id>/game/<int:game_id>/delete', methods=['GET', 'POST'])
+@app.route(
+    '/genre/<int:genre_id>/game/<int:game_id>/delete', methods=['GET', 'POST'])
 def deleteGameItem(genre_id, game_id):
     if 'username' not in login_session:
         return redirect('/login')
