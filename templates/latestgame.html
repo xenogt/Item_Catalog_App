@@ -9,7 +9,7 @@
 {% for game in latest %}
 <div class="row">
     <div class="col-md-1"></div>
-    <a href="{{url_for('showGame', genre_id = game.genre.id)}}">
+    <a href="{{url_for('showSingleGame', genre_id = game.genre.id, game_id = game.id)}}">
         <div class="col-md-9 genre-list">
             <h3>{{game.name}} <small>({{game.genre.name}})</small></h3>
         </div>

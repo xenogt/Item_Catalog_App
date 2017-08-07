@@ -47,11 +47,13 @@
 					{% for i in items %}
 						{% if i.platform == 'PC' %}
 							<div class="game-item">
+								<a href="{{url_for('showSingleGame', genre_id = i.genre.id, game_id = i.id)}}">
 								<h3>{{i.name}} ({{i.user.name}})</h3>
-								<p>{{i.description}}</p>
-								<p class="game-release_year">{{i.release_year}}</p>
+								<!--<p>{{i.description}}</p>
+								<p class="game-release_year">{{i.release_year}}</p>-->
 								<a href='{{url_for('editGameItem', genre_id = genre.id, game_id=i.id ) }}'>Edit</a> | 
 								<a href='{{url_for('deleteGameItem', genre_id = genre.id, game_id=i.id ) }}'>Delete</a>
+								</a>
 							</div>
 						{% endif %}
 					{% endfor %}
@@ -61,11 +63,13 @@
 					{% for i in items %}
 						{% if i.platform == 'Game Console' %}
 						<div class="game-item">
+							<a href="{{url_for('showSingleGame', genre_id = i.genre.id, game_id = i.id)}}">
 							<h3>{{i.name}} ({{i.user.name}})</h3>
-							<p>{{i.description}}</p>
-							<p class="game-release_year">{{i.release_year}}</p>
+							<!--<p>{{i.description}}</p>
+							<p class="game-release_year">{{i.release_year}}</p>-->
 							<a href='{{url_for('editGameItem', genre_id = genre.id, game_id=i.id ) }}'>Edit</a> | 
 							<a href='{{url_for('deleteGameItem', genre_id = genre.id, game_id=i.id ) }}'>Delete</a>
+							</a>
 						</div>
 						{% endif %}
 					{% endfor %}
@@ -75,11 +79,13 @@
 					{% for i in items %}
 						{% if i.platform == 'Mobile' %}
 						<div class="game-item">
+							<a href="{{url_for('showSingleGame', genre_id = i.genre.id, game_id = i.id)}}">
 							<h3>{{i.name}} ({{i.user.name}})</h3>
-							<p>{{i.description}}</p>
-							<p class="game-release_year">{{i.release_year}}</p>
+							<!--<p>{{i.description}}</p>
+							<p class="game-release_year">{{i.release_year}}</p>-->
 							<a href='{{url_for('editGameItem', genre_id = genre.id, game_id=i.id ) }}'>Edit</a> | 
 							<a href='{{url_for('deleteGameItem', genre_id = genre.id, game_id=i.id ) }}'>Delete</a>
+							</a>
 						</div>
 						{% endif %}
 					{% endfor %}

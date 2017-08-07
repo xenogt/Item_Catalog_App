@@ -254,3 +254,7 @@ div.success {
 .mainblock {
 	padding-bottom: 20px;
 }
+
+.game-item a, .game-item a:hover {
+	text-decoration: none;
+}

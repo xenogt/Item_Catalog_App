@@ -358,8 +358,7 @@ def showGame(genre_id):
 
     items = session.query(GameItem).filter_by(
         genre_id=genre_id).all()
-    # if 'username' not in login_session or creator.id != login_session['user_id']:
-    #     return render_template('publicgame.html', items=items, genre=genre, creator=creator)
+
     if 'username' not in login_session:
         return render_template('publicgame.html', items=items, genre=genre, creator=creator)
     else:
@@ -381,6 +380,20 @@ def newGameItem(genre_id):
         return redirect(url_for('showGame', genre_id=genre_id))
     else:
         return render_template('newgameitem.html', genre_id=genre_id)
+
+
+# show a game item
+@app.route('/genre/<int:genre_id>/game/<int:game_id>/view', methods=['GET', 'POST'])
+def showSingleGame(genre_id, game_id):
+    toViewItem = session.query(GameItem).filter_by(id=game_id).one()
+    creator = getUserInfo(toViewItem.user.id)
+    genre = session.query(Genre).filter_by(id=genre_id).one()
+
+    if 'username' not in login_session or toViewItem.user.id != login_session['user_id']:
+        return render_template('publicsinglegame.html', item=toViewItem, genre=genre, creator=creator)
+    else:
+        return render_template('singlegame.html', item=toViewItem, genre=genre, creator=creator)
+
 
 # Edit a game item
 @app.route('/genre/<int:genre_id>/game/<int:game_id>/edit', methods=['GET', 'POST'])
