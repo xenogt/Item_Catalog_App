@@ -31,7 +31,6 @@
 	</div>
 	{% if items !=[] %}	
 		<div class="row">
-			<!--<div class="col-md-1"></div>-->
 			<div class="col-md-4">
 				<h2>PC</h2>
 					{% for i in items %}
@@ -66,12 +65,10 @@
 							<h3>{{i.name}} ({{i.user.name}})</h3>
 							<p>{{i.description}}</p>
 							<p class="game-release_year">{{i.release_year}}</p>
-							
 						</div>
 						{% endif %}
 					{% endfor %}
 			</div>
-			<!--<div class="col-md-1"></div>-->
 		</div>
 	{% endif %}
 {% endblock %}

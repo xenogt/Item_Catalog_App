@@ -93,10 +93,10 @@ h3 {
 	height: 15px;
 }
 .divider.blue {
-	background-color: #42C3C9;
+	background-color: #5e3f6d;
 }
 .divider.green {
-	background-color: #9FB80A;
+	background-color: #b25e93;
 }
 .banner.main {
 	height: 150px;
@@ -174,14 +174,28 @@ h3 {
 }
  .genre-list {
  	background-color: #F0F0F0;
- 	padding: 20px;
+ 	padding: 10px;
+	 margin: 5px 0;
  }
- .genre-list:hover {
- 	background-color: #798393;
- 	padding: 20px;
-	color: white;
+ .genre-list:hover{
+ 	background-color: #5e3f6d;
+ 	padding: 10px;
 }
-
+.genre-list h3 {
+	color: #5e3f6d;
+}
+.genre-list:hover h3 {
+	color: #F0F0F0;
+}
+.genre-header {
+ 	background-color: #5e3f6d;
+	text-align: center;
+	margin-bottom: 5px;
+	padding: 10px;
+ }
+.genre-header h2 {
+	color: #F0F0F0;
+}
 form {
 	display: inline-flex;
 }

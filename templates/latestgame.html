@@ -1,0 +1,19 @@
+{% block content %} 
+    <div class="row">
+			<div class="col-md-1"></div>
+			<div class="col-md-9 genre-header">
+				<h2>Latest Games</h2>
+			</div>
+			<div class="col-md-2"></div>
+		</div>
+{% for game in latest %}
+<div class="row">
+    <div class="col-md-1"></div>
+    <a href="{{url_for('showGame', genre_id = game.genre.id)}}">
+        <div class="col-md-9 genre-list">
+            <h3>{{game.name}} <small>({{game.genre.name}})</small></h3>
+        </div>
+    </a>
+    <div class="col-md-2"></div>
+</div>
+{% endfor %} {% endblock %}
