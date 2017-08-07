@@ -5,6 +5,7 @@ import string
 import httplib2
 import json
 import requests
+from functools import wraps
 from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
 from flask import session as login_session
@@ -28,6 +29,16 @@ Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
+
+
+# use this decorator to check login status
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'username' not in login_session:
+            return redirect('/login')
+        return f(*args, **kwargs)
+    return decorated_function
 
 
 # Create anti-forgery state token
@@ -293,10 +304,9 @@ def showGenres():
 
 
 # Create a new genr
+@login_required
 @app.route('/genre/new/', methods=['GET', 'POST'])
 def newGenre():
-    if 'username' not in login_session:
-        return redirect('/login')
     if request.method == 'POST':
         newGenre = Genre(
             name=request.form['name'], user_id=login_session['user_id'])
@@ -309,12 +319,11 @@ def newGenre():
 
 
 # Edit a genre
+@login_required
 @app.route('/genre/<int:genre_id>/edit/', methods=['GET', 'POST'])
 def editGenre(genre_id):
     editedGenre = session.query(
         Genre).filter_by(id=genre_id).one()
-    if 'username' not in login_session:
-        return redirect('/login')
     if editedGenre.user_id != login_session['user_id']:
         flash(
             'You are not authorized to edit this genre. Please create your own'
@@ -330,12 +339,11 @@ def editGenre(genre_id):
 
 
 # Delete a genre
+@login_required
 @app.route('/genre/<int:genre_id>/delete/', methods=['GET', 'POST'])
 def deleteGenre(genre_id):
     genreToDelete = session.query(
         Genre).filter_by(id=genre_id).one()
-    if 'username' not in login_session:
-        return redirect('/login')
     if genreToDelete.user_id != login_session['user_id']:
         flash('You are not authorized to delete this genre', 'error')
         return redirect(url_for('showGame', genre_id=genre_id))
@@ -367,10 +375,9 @@ def showGame(genre_id):
 
 
 # Create a new game item
+@login_required
 @app.route('/genre/<int:genre_id>/game/new/', methods=['GET', 'POST'])
 def newGameItem(genre_id):
-    if 'username' not in login_session:
-        return redirect('/login')
     genre = session.query(Genre).filter_by(id=genre_id).one()
     if request.method == 'POST':
         newItem = GameItem(
@@ -411,11 +418,10 @@ def showSingleGame(genre_id, game_id):
 
 
 # Edit a game item
+@login_required
 @app.route(
     '/genre/<int:genre_id>/game/<int:game_id>/edit', methods=['GET', 'POST'])
 def editGameItem(genre_id, game_id):
-    if 'username' not in login_session:
-        return redirect('/login')
     editedItem = session.query(GameItem).filter_by(id=game_id).one()
     genre = session.query(Genre).filter_by(id=genre_id).one()
     if login_session['user_id'] != editedItem.user_id:
@@ -441,11 +447,10 @@ def editGameItem(genre_id, game_id):
 
 
 # Delete a game item
+@login_required
 @app.route(
     '/genre/<int:genre_id>/game/<int:game_id>/delete', methods=['GET', 'POST'])
 def deleteGameItem(genre_id, game_id):
-    if 'username' not in login_session:
-        return redirect('/login')
     genre = session.query(Genre).filter_by(id=genre_id).one()
     itemToDelete = session.query(GameItem).filter_by(id=game_id).one()
     if login_session['user_id'] != itemToDelete.user_id:
