@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import random
 import string
 import httplib2
@@ -10,8 +12,8 @@ from database_setup import Base, Genre, GameItem, User
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
 from flask import make_response
-from flask import Flask, render_template, request, redirect, jsonify,
-url_for, flash
+from flask import Flask, render_template, request, redirect
+from flask import jsonify, url_for, flash
 
 app = Flask(__name__)
 
@@ -395,9 +397,11 @@ def showSingleGame(genre_id, game_id):
     toViewItem = session.query(GameItem).filter_by(id=game_id).one()
     creator = getUserInfo(toViewItem.user.id)
     genre = session.query(Genre).filter_by(id=genre_id).one()
-
-    if 'username' not in login_session
-    or toViewItem.user.id != login_session['user_id']:
+    if 'user_id' not in login_session:
+        return render_template(
+            'publicsinglegame.html',
+            item=toViewItem, genre=genre, creator=creator)
+    if toViewItem.user.id != login_session['user_id']:
         return render_template(
             'publicsinglegame.html',
             item=toViewItem, genre=genre, creator=creator)
