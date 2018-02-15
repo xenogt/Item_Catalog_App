@@ -15,16 +15,26 @@ from oauth2client.client import FlowExchangeError
 from flask import make_response
 from flask import Flask, render_template, request, redirect
 from flask import jsonify, url_for, flash
+import os
 
 app = Flask(__name__)
 
+THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
+gkey = os.path.join(THIS_FOLDER, 'client_secrets.json')
+fkey = os.path.join(THIS_FOLDER, 'fb_client_secrets.json')
+dbData = os.path.join(THIS_FOLDER, 'gamecatalog.db')
+
+print gkey
+print fkey
+print dbData
+
 CLIENT_ID = json.loads(
-    open('client_secrets.json', 'r').read())['web']['client_id']
+    open(gkey, 'r').read())['web']['client_id']
 APPLICATION_NAME = "Genre Game Application"
 
 
 # Connect to Database and create database session
-engine = create_engine('sqlite:///gamecatalog.db')
+engine = create_engine('sqlite:///'+dbData)
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
@@ -59,10 +69,10 @@ def fbconnect():
         return response
     access_token = request.data
     print "access token received %s " % access_token
-    app_id = json.loads(open('fb_client_secrets.json', 'r').read())[
+    app_id = json.loads(open(fkey, 'r').read())[
         'web']['app_id']
     app_secret = json.loads(
-        open('fb_client_secrets.json', 'r').read())['web']['app_secret']
+        open(fkey, 'r').read())['web']['app_secret']
     url = 'https://graph.facebook.com/oauth/access_token?grant_type=fb_' \
         'exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=%s' \
         % (app_id, app_secret, access_token)
@@ -139,7 +149,7 @@ def gconnect():
 
     try:
         # Upgrade the authorization code into a credentials object
-        oauth_flow = flow_from_clientsecrets('client_secrets.json', scope='')
+        oauth_flow = flow_from_clientsecrets(gkey, scope='')
         oauth_flow.redirect_uri = 'postmessage'
         credentials = oauth_flow.step2_exchange(code)
     except FlowExchangeError:
