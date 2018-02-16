@@ -23,6 +23,9 @@
           url: '/gconnect?state={{STATE}}',
           processData: false,
           data: authResult['code'],
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+          },
           contentType: 'application/octet-stream; charset=utf-8',
           success: function (result) {
             // Handle or verify the server response if necessary.
