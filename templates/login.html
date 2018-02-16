@@ -23,6 +23,14 @@
           url: '/gconnect?state={{STATE}}',
           processData: false,
           data: authResult['code'],
+          xhrFields: {
+            // The 'xhrFields' property sets additional fields on the XMLHttpRequest.
+            // This can be used to set the 'withCredentials' property.
+            // Set the value to 'true' if you'd like to pass cookies to the server.
+            // If this is enabled, your server must respond with the header
+            // 'Access-Control-Allow-Credentials: true'.
+            withCredentials: false
+          },
           headers: {
             'X-Requested-With': 'XMLHttpRequest'
           },
@@ -39,6 +47,10 @@
             } else {
               $('#result').html('Failed to make a server-side call. Check your configuration and console.');
             }
+          },
+          error: function(error) {
+            console.log("error...");
+            console.log(error);
           }
         });
       }
