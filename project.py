@@ -24,9 +24,9 @@ gkey = os.path.join(THIS_FOLDER, 'client_secrets.json')
 fkey = os.path.join(THIS_FOLDER, 'fb_client_secrets.json')
 dbData = os.path.join(THIS_FOLDER, 'gamecatalog.db')
 
-print gkey
-print fkey
-print dbData
+#print gkey
+#print fkey
+#print dbData
 
 CLIENT_ID = json.loads(
     open(gkey, 'r').read())['web']['client_id']
@@ -35,7 +35,7 @@ APPLICATION_NAME = "Genre Game Application"
 
 # Connect to Database and create database session
 #engine = create_engine('sqlite:///'+dbData)
-engine = create_engine('postgresql://catalog:catalog@localhost:5432/catalog');
+engine = create_engine('postgresql://catalog:catalog@localhost:5432/catalog')
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
