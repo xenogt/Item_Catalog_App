@@ -34,7 +34,8 @@ APPLICATION_NAME = "Genre Game Application"
 
 
 # Connect to Database and create database session
-engine = create_engine('sqlite:///'+dbData)
+#engine = create_engine('sqlite:///'+dbData)
+engine = create_engine('postgresql://catalog:catalog@localhost:5432/catalog');
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
