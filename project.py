@@ -17,20 +17,18 @@ from flask import Flask, render_template, request, redirect
 from flask import jsonify, url_for, flash
 import os
 
-fkey = 'fb_client_secrets.json'
-gkey = 'client_secrets.json'
-
 app = Flask(__name__)
-THIS_FOLDER = os.path.dirname(os.path.abspath(gkey))
-print 'parent:'+THIS_FOLDER
-print os.path.abspath(gkey)
+THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
+fkey = os.path.join(THIS_FOLDER, 'fb_client_secrets.json')
+gkey = os.path.join(THIS_FOLDER, 'client_secrets.json')
+dbpath = os.path.join(THIS_FOLDER, 'gamecatalog.db')
 
 CLIENT_ID = json.loads(
     open(gkey, 'r').read())['web']['client_id']
 APPLICATION_NAME = "Genre Game Application"
 
 # Connect to Database and create database session
-#engine = create_engine('sqlite:///gamecatalog.db')
+# engine = create_engine('sqlite:///'+dbpath)
 engine = create_engine('postgresql://catalog:catalog@localhost:5432/catalog')
 
 Base.metadata.bind = engine
@@ -41,6 +39,7 @@ session = DBSession()
 
 # use this decorator to check login status
 def login_required(f):
+    print 'in login_required'
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if 'username' not in login_session:
@@ -52,8 +51,10 @@ def login_required(f):
 # Create anti-forgery state token
 @app.route('/login')
 def showLogin():
+    print 'in login method'
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                     for x in xrange(32))
+    print 'state: '+state
     login_session['state'] = state
     # return "The current session state is %s" % login_session['state']
     return render_template('login.html', STATE=state)
@@ -137,6 +138,7 @@ def fbdisconnect():
 
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
+    print 'in gconnect'
     # Validate state token
     if request.args.get('state') != login_session['state']:
         response = make_response(json.dumps('Invalid state parameter.'), 401)
@@ -230,6 +232,7 @@ def gconnect():
 
 # User Helper Functions
 def createUser(login_session):
+    print 'in createuser'
     newUser = User(name=login_session['username'], email=login_session[
                    'email'], picture=login_session['picture'])
     session.add(newUser)
@@ -239,6 +242,7 @@ def createUser(login_session):
 
 
 def getUserInfo(user_id):
+    print 'in getuserinfo'
     user = session.query(User).filter_by(id=user_id).one()
     return user
 
@@ -254,6 +258,7 @@ def getUserID(email):
 # DISCONNECT - Revoke a current user's token and reset their login_session
 @app.route('/gdisconnect')
 def gdisconnect():
+    print 'in gdisconnect'
     # Only disconnect a connected user.
     access_token = login_session.get('access_token')
     if access_token is None:

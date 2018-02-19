@@ -1,6 +1,8 @@
+<html>
 <head>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
   <script src="//apis.google.com/js/platform.js?onload=start"></script>
+  <meta charset="utf-8">
 </head>
 
 <body>
@@ -14,6 +16,7 @@
 
   <script>
     function signInCallback(authResult) {
+      console.log('in login callback function');
       if (authResult['code']) {
         // Hide the sign-in button now that the user is authorized
         $('#signinButton').attr('style', 'display: none');
@@ -29,7 +32,7 @@
             // Set the value to 'true' if you'd like to pass cookies to the server.
             // If this is enabled, your server must respond with the header
             // 'Access-Control-Allow-Credentials: true'.
-            withCredentials: true
+            withCredentials: false
           },
           headers: {
             'X-Requested-With': 'XMLHttpRequest'
