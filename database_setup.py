@@ -4,7 +4,9 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
 
 Base = declarative_base()
-
+THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
+#dbDataPath = 'sqlite:///'+os.path.join(THIS_FOLDER, 'gamecatalog.db')
+dbDataPath = 'postgresql://catalog:catalog@localhost:5432/catalog'
 
 class User(Base):
     __tablename__ = 'user'
@@ -58,7 +60,7 @@ class GameItem(Base):
         }
 
 
-engine = create_engine('sqlite:///gamecatalog.db')
+engine = create_engine(dbDataPath)
 
 
 Base.metadata.create_all(engine)
