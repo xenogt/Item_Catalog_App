@@ -2,9 +2,10 @@ from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
+import os
 
 Base = declarative_base()
-THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
+#THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
 #dbDataPath = 'sqlite:///'+os.path.join(THIS_FOLDER, 'gamecatalog.db')
 dbDataPath = 'postgresql://catalog:catalog@localhost:5432/catalog'
 
