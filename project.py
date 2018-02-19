@@ -469,7 +469,7 @@ def deleteGameItem(genre_id, game_id):
         flash('Game Item Successfully Deleted', 'success')
         return redirect(url_for('showGame', genre_id=genre_id))
     else:
-        return render_template('deleteGameItem.html', item=itemToDelete)
+        return render_template('deletegameitem.html', item=itemToDelete)
 
 
 # Disconnect based on provider
