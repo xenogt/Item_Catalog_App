@@ -30,7 +30,7 @@
 ### configuration made
     1. set ssh port to 2200
     2. grant sudoers right to user grader
-    3. firewall allow traffic settings
+    3. firewall allow traffic on 80, 2200, 123 and 8000 (port 8000 was used for testing when deploy app manually without mod_wsgi)
     4. apache2 site-available conf file/mod_wsgi conf
     5. create the wsgi file to link up the flask application
     6. disable the default site/conf and enable the flask app site/conf
