@@ -1,28 +1,47 @@
 # Video Game Catalog by Genres
 
-### Assumption and Pre-requiste
-- use the vagrant box provided for this course
+## Final Project - Linux Server Configuration
 
-## setup
+### ssh login
+    user: grader (password is grader in case switch between grader user and db user (catalog))
+    ip: 54.156.227.190
+    port: 2200
+    private key: supplied via "note to reviewer" message
 
-1. cd into the /vagrant folder where the Vagrantfile is located
-2. clone this project `git clone https://github.com/xenogt/Item_Catalog_App.git`
-3. `vagrant up` if you do not already have this vagrant box
-4. ssh into the vagrant machine, `vagrant ssh`
-5. you are now inside the vagrant machine, cd into the project dir. `cd /vagrant/Item_Catalog_App`
-6. run project.py to kick off the app `python project.py`
-7. open browser and go to localhost:8000 to view the application
+### access web application
+    1. access link: http://54.156.227.190.xip.io
+    2. host domain address: http://ec2-54-156-227-190.compute-1.amazonaws.com
+    ***Note:*** use access link to get to the application, for some reason google's auth does not allow login using the actual awes host address.
 
-## API Endpoints
+### software packages installed
+    1. python
+    2. apache2
+    3. apache2-bin
+    4. python-httplib2
+    5. python-requests
+    6. python-flask
+    7. python-sqlachemy
+    8. python 0auth2client
+    9. git
+    10. libapache2-mod-wsgi
+    11. python-psycopg2
+    12. postgresql
 
-### to get a list of all game genre
-go to this URL `localhost:8000/genre/JSON`
-### to get a list of game item for a given game genre
-go to `localhost:8000/genre/<genre_id>/game/JSON`
-### to get a single game item info
-go to `localhost:8000/genre/<genre_id>/game/<game_id>/JSON`
+### configuration made
+    1. set ssh port to 2200
+    2. grant sudoers right to user grader
+    3. firewall allow traffic settings
+    4. apache2 site-available conf file/mod_wsgi conf
+    5. create the wsgi file to link up the flask application
+    6. disable the default site/conf and enable the flask app site/conf
+    5. postgres configuration
+        1. add new user: catalog (both on the system level and database level, password for catalog user on system is "catalog")
+        2. add new database: catalog
+        3. grant privileges on database to user created
+        4. populated initial tables with some dummy data
 
-## General Usage
+
+## General application Usage
 
 * without log into the application, user can only view the content
 * home page has a split view, a list of pre-populated game genres on the left, and a list of latest added game items on the right.
