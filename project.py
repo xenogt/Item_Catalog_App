@@ -17,25 +17,22 @@ from flask import Flask, render_template, request, redirect
 from flask import jsonify, url_for, flash
 import os
 
+fkey = 'fb_client_secrets.json'
+gkey = 'client_secrets.json'
+
 app = Flask(__name__)
-
-THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
-gkey = os.path.join(THIS_FOLDER, 'client_secrets.json')
-fkey = os.path.join(THIS_FOLDER, 'fb_client_secrets.json')
-dbData = os.path.join(THIS_FOLDER, 'gamecatalog.db')
-
-#print gkey
-#print fkey
-#print dbData
+THIS_FOLDER = os.path.dirname(os.path.abspath(gkey))
+print 'parent:'+THIS_FOLDER
+print os.path.abspath(gkey)
 
 CLIENT_ID = json.loads(
     open(gkey, 'r').read())['web']['client_id']
 APPLICATION_NAME = "Genre Game Application"
 
-
 # Connect to Database and create database session
-#engine = create_engine('sqlite:///'+dbData)
+#engine = create_engine('sqlite:///gamecatalog.db')
 engine = create_engine('postgresql://catalog:catalog@localhost:5432/catalog')
+
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
