@@ -11,7 +11,7 @@
 ### access web application
     1. access link: http://54.156.227.190.xip.io
     2. host domain address: http://ec2-54-156-227-190.compute-1.amazonaws.com
-    **Note:** use access link to get to the application, for some reason google's auth does not allow login using the actual awes host address.
+    **Note: use access link to get to the application, for some reason google's auth does not allow login using the actual awes host address.**
 
 ### software packages installed
     1. python
