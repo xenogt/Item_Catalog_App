@@ -27,6 +27,7 @@
           url: '/gconnect?state={{STATE}}',
           processData: false,
           data: authResult['code'],
+          contentType: 'application/octet-stream; charset=utf-8',
           xhrFields: {
             // The 'xhrFields' property sets additional fields on the XMLHttpRequest.
             // This can be used to set the 'withCredentials' property.
